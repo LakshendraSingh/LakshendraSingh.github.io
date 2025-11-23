@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lakshendra Singh | SYSTEM TERMINAL</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+ 
+</head>
+<body class="h-screen w-screen overflow-hidden relative selection:bg-red-900 selection:text-white bg-black">
+
+    <div class="scanlines"></div>
+    <div class="terminator-vision"></div>
+    <div class="scan-bar"></div>
+
+    <div id="mobile-warning" class="absolute inset-0 bg-black z-[12000] hidden flex-col items-center justify-center p-6 text-center border-2 border-red-600 m-2">
+        <div class="text-4xl text-red-500 mb-4"><i class="fas fa-desktop"></i></div>
+        <h2 class="text-xl font-tech text-red-500 mb-2 uppercase tracking-widest">Optimized for Desktop</h2>
+        <p class="text-sm text-gray-400 font-mono mb-6 leading-relaxed">
+            For the best immersive experience, please access this terminal via a desktop computer. Mobile interfaces are limited.
+        </p>
+        <button onclick="dismissMobileWarning()" class="border border-red-600 text-red-500 px-6 py-2 font-mono hover:bg-red-600 hover:text-black transition uppercase">
+            Continue Anyway
+        </button>
+    </div>
+
+    <div id="boot-screen" class="absolute inset-0 bg-black z-[11000] hidden flex-col items-center justify-center overflow-hidden cursor-none">
+        <div class="relative z-10 text-center w-full max-w-3xl px-4">
+            <div class="mb-12 relative group">
+                <h1 class="text-4xl md:text-7xl font-black font-tech text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-900 glitch-text filter blur-[0.5px] animate-pulse" data-text="SKYNET DEFENSE GRID">
+                    SKYNET DEFENSE GRID
+                </h1>
+                <div class="text-red-500 font-code text-sm md:text-xl mt-2 tracking-[0.5em] opacity-80">NODE: [CLASSIFIED]</div>
+            </div>
+            
+            <div class="h-64 w-full bg-black/50 border-l-2 border-red-600 p-4 text-left font-code text-red-500 text-sm md:text-base overflow-hidden shadow-[0_0_20px_rgba(255,0,60,0.1)]">
+                <div id="boot-text-container" class="flex flex-col justify-end h-full space-y-1"></div>
+            </div>
+            
+            <div class="w-full h-1 bg-red-900/30 mt-4">
+                <div id="boot-progress" class="h-full bg-red-500 shadow-[0_0_10px_#ff003c] w-0 transition-all duration-100"></div>
+            </div>
+            <div class="mt-2 text-xs text-red-900 font-mono md:hidden block">TAP TO BYPASS SEQUENCE</div>
+            <div class="mt-2 text-xs text-red-900 font-mono md:block hidden">[ESC] TO BYPASS SEQUENCE</div>
+        </div>
+    </div>
+
+    <div id="login-screen" class="absolute inset-0 z-[10000] hidden bg-black flex items-center justify-center transition-all duration-700">
+        <div class="absolute inset-0 bg-hex-grid"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black"></div>
+        
+        <div class="relative z-10 bg-black/80 border border-red-900 p-8 max-w-md w-full shadow-[0_0_50px_rgba(255,0,60,0.2)] animate-[fadeIn_1s_ease-out]">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-tech font-bold text-red-500 tracking-widest mb-1">IDENTITY VERIFICATION</h2>
+                <div class="h-px w-full bg-gradient-to-r from-transparent via-red-800 to-transparent"></div>
+            </div>
+
+            <div class="flex flex-col items-center gap-6">
+                <div class="relative w-40 h-40 group">
+                    <div class="absolute inset-0 border-2 border-red-900 rounded-full animate-pulse"></div>
+                    <div class="absolute inset-0 border-t-2 border-red-500 rounded-full animate-spin duration-[3s]"></div>
+                    <img src="https://images.unsplash.com/photo-1535868463750-c78d9543614f?q=80&w=200&auto=format&fit=crop" alt="T-800" class="w-full h-full rounded-full p-1 object-cover filter grayscale contrast-125 brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition duration-500">
+                </div>
+                
+                <div class="text-center">
+                    <h3 class="text-xl font-bold text-white font-mono tracking-wider">Lakshendra Singh</h3>
+                    <p class="text-xs text-red-700 font-mono mt-1">CLEARANCE LEVEL: OF-10</p>
+                </div>
+                
+                <button onclick="window.login()" class="w-full py-3 bg-red-950/30 border border-red-600 text-red-500 hover:bg-red-600 hover:text-black transition-all duration-200 font-tech tracking-widest uppercase text-sm group relative overflow-hidden cursor-pointer z-50 pointer-events-auto shadow-[0_0_15px_rgba(255,0,60,0.1)]">
+                    <span class="relative z-10 group-hover:font-bold flex items-center justify-center gap-2">
+                        <i class="fas fa-fingerprint"></i> Access System
+                    </span>
+                    <div class="absolute inset-0 bg-red-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 z-0"></div>
+                </button>
+            </div>
+            
+            <div class="mt-6 flex justify-between text-[10px] text-red-900 font-mono">
+                <span>SECURE CONNECTION</span>
+                <span>V. 7.0.2</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="desktop" class="absolute inset-0 hidden bg-black transition-all duration-1000" oncontextmenu="handleRightClick(event)">
+        
+        <div class="absolute inset-0 bg-black/60 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-hex-grid pointer-events-none opacity-20"></div> 
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,0,60,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,0,60,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+
+        <div id="weather-widget" onclick="initWeatherSequence()" class="absolute right-5 top-5 w-64 text-red-100 cursor-pointer hidden z-0 select-none opacity-80 hover:opacity-100 transition-opacity group border border-transparent hover:border-red-900/50 p-2 rounded bg-black/60">
+            <div class="flex justify-between items-start mb-2 border-b border-red-900/30 pb-2">
+                <div>
+                    <div class="text-[10px] text-red-500 font-tech tracking-widest mb-1">SECTOR LOCATION</div>
+                    <div class="text-sm font-bold text-white font-mono uppercase flex items-center" id="location-display">
+                        <i class="fas fa-map-marker-alt text-red-600 mr-2 animate-pulse"></i> <span>CLICK TO INITIALIZE</span>
+                    </div>
+                </div>
+                <i id="weather-icon" class="fas fa-satellite-dish text-xl text-red-600 group-hover:animate-spin mt-1"></i>
+            </div>
+            <div class="flex justify-between items-end">
+                <div id="weather-temp" class="text-4xl font-tech text-red-500">--°</div>
+                <div class="text-right flex flex-col items-end">
+                    <div id="weather-desc" class="text-[10px] font-code text-red-300/70 tracking-widest uppercase">OFFLINE</div>
+                    <div class="flex gap-3 text-[10px] text-red-400 mt-1 font-mono">
+                        <span><i class="fas fa-wind"></i> <span id="weather-wind">--</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="hologram-container" class="hidden">
+            <div id="hologram-label" class="text-[10px] text-red-500 font-tech tracking-[0.3em] animate-pulse mt-64">
+                GLOBAL DEFENSE MONITOR<br>SYSTEM: SOL-3
+            </div>
+        </div>
+
+        <div id="judgment-wrapper" class="absolute left-1/2 top-10 transform -translate-x-1/2 z-0 pointer-events-none text-center opacity-70 w-full max-w-md transition-all duration-300">
+            <div class="text-[10px] text-red-600 font-tech tracking-[0.5em] animate-pulse uppercase">Judgement Day Protocol</div>
+            <div id="judgment-timer" class="text-2xl md:text-5xl font-black judgment-clock text-red-500 tracking-widest mt-1">00:00:00:00</div>
+            <div class="text-[8px] text-red-800 font-mono mt-1">T-MINUS TO SYSTEM ACTIVATION</div>
+        </div>
+
+        <div id="desktop-icons-layer"></div>
+
+        <div id="windows-area" class="absolute inset-0 pointer-events-none z-10"></div>
+
+        <div id="context-menu">
+            <div class="ctx-item" onclick="location.reload()"><i class="fas fa-sync-alt text-xs"></i> REBOOT SYSTEM</div>
+            <div class="ctx-item" onclick="toggleFullScreen()"><i class="fas fa-expand text-xs"></i> TOGGLE VISUALS</div>
+            <div class="ctx-hr"></div>
+            <div class="ctx-item" onclick="openApp('settings')"><i class="fas fa-cogs text-xs"></i> CONFIGURATION</div>
+            <div class="ctx-item" onclick="openApp('explorer')"><i class="fas fa-folder-open text-xs"></i> BROWSE DATA</div>
+        </div>
+
+        <div id="taskbar" class="fixed bottom-0 w-full h-12 glass flex items-center justify-between px-3 z-[9999] bg-black/95 border-t border-red-600/30">
+            <div class="flex items-center gap-4 h-full overflow-x-auto no-scrollbar">
+                <button id="start-btn" class="h-8 w-8 rounded-sm hover:bg-red-900/50 flex items-center justify-center transition-colors text-red-500 hover:text-white border border-red-900 hover:border-red-500 group shrink-0" onclick="toggleStartMenu()">
+                    <i class="fas fa-th-large text-lg group-hover:rotate-90 transition-transform duration-300"></i>
+                </button>
+                <div class="h-6 w-px bg-red-900/50 mx-2 shrink-0"></div>
+                <div id="active-apps" class="flex items-center gap-1 ml-2 h-full px-2"></div>
+            </div>
+            
+            <div class="flex items-center gap-6 h-full text-xs px-4 font-code text-red-500 border-l border-red-900/30 bg-black shrink-0">
+                <div class="hidden md:flex gap-4">
+                    <i class="fas fa-network-wired animate-pulse text-red-400" title="Skynet Uplink"></i>
+                    <i class="fas fa-shield-alt text-red-600" title="Defense Grid Active"></i>
+                </div>
+                <div class="text-right flex flex-col justify-center h-full cursor-pointer hover:text-red-300 transition" onclick="openApp('calendar')" title="Open Calendar">
+                    <div id="clock-time" class="font-bold text-red-100 text-sm leading-none mb-0.5"></div>
+                    <div id="clock-date" class="text-[9px] opacity-60 leading-none"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="start-menu" class="absolute bottom-14 left-2 w-[350px] h-[450px] bg-black/95 border border-red-600 rounded-sm hidden-menu z-[999] flex flex-col overflow-hidden shadow-[0_0_50px_rgba(255,0,60,0.15)]">
+            <div class="p-1 bg-gradient-to-r from-red-900 to-black">
+                <div class="text-[10px] font-tech text-red-200 px-2 tracking-[0.2em]">SYSTEM MENU</div>
+            </div>
+            <div class="flex-1 flex flex-col p-2 overflow-y-auto bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSJyZ2JhKDI1NSwgMCwgNjAsIDAuMDIpIi8+PC9zdmc+')]">
+                <div class="grid grid-cols-1 gap-1" id="start-menu-grid">
+                </div>
+            </div>
+            <div class="h-10 bg-red-950/20 border-t border-red-900/50 flex items-center justify-between px-4">
+                <div class="flex items-center gap-2 cursor-pointer hover:text-white text-red-400 transition" onclick="openApp('bio'); toggleStartMenu()">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="text-xs font-bold font-tech tracking-widest">L. SINGH</span>
+                </div>
+                <button class="text-red-600 hover:text-red-400 transition" onclick="shutdown()">
+                    <i class="fas fa-power-off"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script src="script.js"></script>
+</body>
+</html>

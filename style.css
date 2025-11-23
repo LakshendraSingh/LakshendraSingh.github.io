@@ -1,0 +1,326 @@
+
+:root {
+    --glass-bg: rgba(10, 5, 5, 0.85);
+    --glass-border: rgba(255, 0, 60, 0.3);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+    --term-red: #ff003c;
+    --term-dark: #050000;
+    --taskbar-height: 48px;
+    --ui-scale: 1;
+}
+
+body.high-contrast {
+    --glass-bg: #000000;
+    --glass-border: #ff0000;
+    --glass-shadow: none;
+    background-color: #000 !important;
+}
+body.high-contrast .glass, 
+body.high-contrast .glass-panel,
+body.high-contrast .window {
+    background: #000 !important;
+    border: 2px solid #ff0000 !important;
+    backdrop-filter: none !important;
+}
+body.high-contrast .text-gray-400,
+body.high-contrast .text-gray-500, 
+body.high-contrast .text-red-300 {
+    color: #fff !important;
+}
+
+body.reduced-motion *,
+body.reduced-motion *::before,
+body.reduced-motion *::after {
+    animation: none !important;
+    transition: none !important;
+}
+body.reduced-motion .scanlines,
+body.reduced-motion .scan-bar,
+body.reduced-motion .terminator-vision,
+body.reduced-motion .glitch-text::before,
+body.reduced-motion .glitch-text::after {
+    display: none !important;
+}
+
+body {
+    font-family: 'Share Tech Mono', monospace;
+    overflow: hidden;
+    user-select: none;
+    background-color: var(--term-dark);
+    color: #e4e4e7;
+    font-size: calc(16px * var(--ui-scale));
+    touch-action: none;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #1a0505; }
+::-webkit-scrollbar-thumb { background: #550011; border: 1px solid #ff003c; }
+::-webkit-scrollbar-thumb:hover { background: #ff003c; }
+
+.terminator-vision {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, transparent 60%, rgba(255, 0, 60, 0.1) 100%);
+    pointer-events: none !important;
+    z-index: 9000;
+}
+
+.scanlines {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none !important;
+    z-index: 9001;
+}
+
+.scan-bar {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 5px;
+    background-color: rgba(255, 0, 60, 0.3);
+    box-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
+    z-index: 9002;
+    animation: scan 4s linear infinite;
+    pointer-events: none !important;
+    opacity: 0.3;
+}
+
+@keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+}
+
+.glitch-text { position: relative; color: var(--term-red); }
+.glitch-text::before, .glitch-text::after {
+    content: attr(data-text);
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--term-dark);
+}
+.glitch-text::before {
+    left: 2px; text-shadow: -1px 0 red;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+.glitch-text::after {
+    left: -2px; text-shadow: -1px 0 blue;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+@keyframes glitch-anim {
+    0% { clip: rect(18px, 9999px, 11px, 0); } 20% { clip: rect(69px, 9999px, 87px, 0); }
+    40% { clip: rect(4px, 9999px, 67px, 0); } 60% { clip: rect(16px, 9999px, 23px, 0); }
+    80% { clip: rect(82px, 9999px, 38px, 0); } 100% { clip: rect(56px, 9999px, 1px, 0); }
+}
+@keyframes glitch-anim2 {
+    0% { clip: rect(65px, 9999px, 96px, 0); } 20% { clip: rect(10px, 9999px, 2px, 0); }
+    40% { clip: rect(30px, 9999px, 40px, 0); } 60% { clip: rect(90px, 9999px, 60px, 0); }
+    80% { clip: rect(15px, 9999px, 85px, 0); } 100% { clip: rect(5px, 9999px, 20px, 0); }
+}
+
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+.glass-panel {
+    background: rgba(15, 10, 10, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 0, 60, 0.4);
+    box-shadow: 0 0 15px rgba(255, 0, 60, 0.1);
+}
+
+#desktop-icons-layer {
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    z-index: 10; pointer-events: none;
+}
+
+#hologram-container {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    z-index: 0; 
+    pointer-events: auto; 
+    opacity: 0.8;
+    transition: opacity 0.5s;
+}
+#hologram-container:hover { opacity: 1; }
+
+#hologram-label {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; pointer-events: none; z-index: 1;
+    text-shadow: 0 0 10px red;
+}
+
+@media (max-width: 768px) {
+    #hologram-container {
+        width: 100%;
+        height: 50%;
+        opacity: 0.4;
+    }
+    
+    #weather-widget {
+        right: auto !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        top: 15px !important;
+        width: 90% !important;
+        max-width: 350px;
+        z-index: 5 !important; 
+        background-color: transparent !important; 
+        border: none !important;
+        backdrop-filter: none !important;
+    }
+    
+    #weather-widget:active, #weather-widget:focus {
+        background-color: rgba(0,0,0,0.8) !important;
+        border: 1px solid rgba(255,0,60,0.3) !important;
+    }
+
+    #judgment-wrapper {
+        top: 140px !important; 
+        transform: translateX(-50%) scale(0.85) !important;
+        width: 100%;
+        z-index: 5;
+    }
+    
+    #taskbar {
+        position: fixed !important;
+        bottom: 0 !important;
+        z-index: 9999 !important;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+.desktop-icon { 
+    width: 90px; height: 100px;
+    position: absolute; 
+    display: flex; flex-direction: column; align-items: center; 
+    justify-content: flex-start; text-align: center;
+    padding: 5px; cursor: pointer;
+    transition: background 0.2s, border 0.2s; 
+    border: 1px solid transparent; border-radius: 4px;
+    color: #ccc; pointer-events: auto; 
+}
+.desktop-icon:hover, .desktop-icon:active { 
+    background: rgba(255, 0, 60, 0.15); 
+    border: 1px solid var(--term-red);
+    color: white; text-shadow: 0 0 5px red;
+}
+.desktop-icon i {
+    font-size: 2rem; margin-bottom: 8px;
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.8));
+}
+.desktop-icon span {
+    font-size: 0.7rem;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 0.5px; line-height: 1.1;
+    background: rgba(0,0,0,0.6); padding: 2px 4px;
+    border-radius: 2px;
+}
+
+#context-menu {
+    position: absolute; z-index: 9999;
+    background: rgba(10, 5, 5, 0.95);
+    border: 1px solid var(--term-red);
+    box-shadow: 0 0 15px rgba(255, 0, 60, 0.2);
+    min-width: 180px; display: none; flex-direction: column; padding: 4px 0;
+}
+.ctx-item {
+    padding: 8px 16px; font-size: 0.8rem;
+    font-family: 'Orbitron', sans-serif;
+    color: #ffcccc; cursor: pointer; display: flex;
+    align-items: center; gap: 10px; transition: all 0.1s;
+}
+.ctx-item:hover { background: var(--term-red); color: black; font-weight: bold; }
+.ctx-hr { height: 1px; background: rgba(255,0,60,0.3); margin: 4px 0; }
+
+.window {
+    position: absolute; display: flex; flex-direction: column;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+    border-radius: 2px; overflow: hidden;
+    transition: transform 0.15s, opacity 0.15s;
+    opacity: 0; transform: scale(0.95);
+    border: 1px solid var(--term-red);
+    background: #0a0a0a;
+    pointer-events: auto !important; 
+    z-index: 100;
+    min-width: 200px; min-height: 150px;
+}
+
+@media (max-width: 768px) {
+    .window {
+        width: 95% !important;
+        height: 80% !important;
+        top: 5% !important;
+        left: 2.5% !important;
+        max-width: none;
+    }
+    .resize-handle { display: none !important; }
+}
+
+.resize-handle {
+    position: absolute; bottom: 0; right: 0;
+    width: 15px; height: 15px;
+    cursor: nwse-resize;
+    background: linear-gradient(135deg, transparent 50%, var(--term-red) 50%);
+    z-index: 50;
+}
+.window.open { opacity: 1; transform: scale(1); }
+.window.minimized { opacity: 0; transform: scale(0.8) translateY(200px); pointer-events: none !important; }
+.window.maximized {
+    width: 100% !important; height: calc(100% - var(--taskbar-height)) !important;
+    top: 0 !important; left: 0 !important; border-radius: 0; border: none;
+}
+
+.font-tech { font-family: 'Orbitron', sans-serif; }
+.font-code { font-family: 'Share Tech Mono', monospace; }
+
+#start-menu { transition: transform 0.15s ease-out, opacity 0.15s; transform-origin: bottom left; }
+#start-menu.hidden-menu { transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none; }
+
+@media (max-width: 768px) {
+    #start-menu {
+        width: 90% !important;
+        left: 5% !important;
+        bottom: 60px !important;
+        height: 60vh !important;
+        position: fixed !important; 
+    }
+}
+
+.bg-hex-grid {
+    background-image: 
+        linear-gradient(30deg, #1a0505 12%, transparent 12.5%, transparent 87%, #1a0505 87.5%, #1a0505),
+        linear-gradient(150deg, #1a0505 12%, transparent 12.5%, transparent 87%, #1a0505 87.5%, #1a0505),
+        linear-gradient(30deg, #1a0505 12%, transparent 12.5%, transparent 87%, #1a0505 87.5%, #1a0505),
+        linear-gradient(150deg, #1a0505 12%, transparent 12.5%, transparent 87%, #1a0505 87.5%, #1a0505),
+        linear-gradient(60deg, #220a0a77 25%, transparent 25.5%, transparent 75%, #220a0a77 75%, #220a0a77),
+        linear-gradient(60deg, #220a0a77 25%, transparent 25.5%, transparent 75%, #220a0a77 75%, #220a0a77);
+    background-size: 40px 70px;
+    background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
+    opacity: 0.3;
+}
+
+canvas { image-rendering: pixelated; }
+
+.judgment-clock { font-family: 'Orbitron', sans-serif; text-shadow: 0 0 10px red; }
+
+input[type=range] {
+    -webkit-appearance: none; width: 100%; background: transparent;
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; height: 16px; width: 16px; background: red; border: 1px solid white; cursor: pointer; margin-top: -6px;
+}
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%; height: 4px; cursor: pointer; background: #330000; border: 1px solid #550000;
+}
+
+input[type=checkbox] { accent-color: red; width: 16px; height: 16px; cursor: pointer; }
